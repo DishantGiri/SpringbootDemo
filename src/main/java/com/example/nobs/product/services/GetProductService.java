@@ -5,6 +5,7 @@ import com.example.nobs.product.model.Product;
 import com.example.nobs.product.model.ProductDTO;
 import com.example.nobs.product.ProductRepo;
 import com.example.nobs.product.Query;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,13 @@ import java.util.Optional;
 public class GetProductService implements Query<Long, ProductDTO> {
     private final ProductRepo productRepo;
 
+
     public GetProductService(ProductRepo productRepo) {
         this.productRepo = productRepo;
     }
 
     @Override
+    @Cacheable("productCache")
     public ResponseEntity<ProductDTO> execute(Long input) {
         Optional<Product> productOptional = productRepo.findById(input);
         if(productOptional.isPresent()){

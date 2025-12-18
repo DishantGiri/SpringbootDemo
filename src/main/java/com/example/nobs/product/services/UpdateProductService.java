@@ -6,6 +6,8 @@ import com.example.nobs.product.model.ProductDTO;
 import com.example.nobs.product.model.UpdateProductCommand;
 import com.example.nobs.product.Command;
 import com.example.nobs.product.ProductRepo;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class UpdateProductService implements Command<UpdateProductCommand, Produ
 
 
     @Override
+    @CachePut(value = "productCache", key = "#updateProductCommand.getId()")
     public ResponseEntity<ProductDTO> execute(UpdateProductCommand updateProductCommand) {
         Optional<Product> productOptional = productRepo.findById(updateProductCommand.getId());
         if(productOptional.isPresent()){

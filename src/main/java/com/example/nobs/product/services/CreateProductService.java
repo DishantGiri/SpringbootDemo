@@ -25,7 +25,6 @@ public class CreateProductService implements Command<Product, ProductDTO> {
     @Override
     public ResponseEntity<ProductDTO> execute(Product product) {
         ProductValidator.execute(product);
-
         Product savedProduct = productRepo.save(product);
         return ResponseEntity.status(HttpStatus.OK).body(new ProductDTO(savedProduct));
     }
